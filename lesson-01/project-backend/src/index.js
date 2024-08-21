@@ -1,4 +1,4 @@
-import { getCurrentMonth } from "./date/index.js";
+import { getCurrentMonth } from './date/index.js';
 
 const currentMonth = getCurrentMonth();
 
