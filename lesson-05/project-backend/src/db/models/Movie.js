@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 const movieSchema = new Schema(
   {
@@ -12,7 +12,7 @@ const movieSchema = new Schema(
     },
     genre: {
       type: String,
-      enum: ['fantastic', 'love story'],
+      enum: ["fantastic", "love story"],
       required: true,
     },
     favorite: {
@@ -24,7 +24,7 @@ const movieSchema = new Schema(
   { versionKey: false, timestamps: true },
 );
 
-const MovieCollection = model('movie', movieSchema);
+const MovieCollection = model("movie", movieSchema);
 
 // category => categories
 // mouse => mice

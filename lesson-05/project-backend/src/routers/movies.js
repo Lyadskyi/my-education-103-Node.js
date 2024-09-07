@@ -1,34 +1,16 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import * as movieServices from './services/movies.js';
+import {
+  getAllMoviesController,
+  getMovieByIdController,
+} from "../controllers/movies.js";
+
+import ctrlWrapper from "../utils/ctrlWpapper.js";
 
 const moviesRouter = Router();
 
-moviesRouter.get('/', async (req, res) => {
-  const data = await movieServices.getAllMovies();
+moviesRouter.get("/", ctrlWrapper(getAllMoviesController));
 
-  res.json({
-    status: 200,
-    message: 'Successfully found movies',
-    data,
-  });
-});
-
-moviesRouter.get('/:id', async (req, res) => {
-  const { id } = req.params;
-  const data = await movieServices.getMovieById(id);
-
-  if (!data) {
-    return res.status(404).json({
-      message: `Movie with id=${id} not found`,
-    });
-  }
-
-  res.json({
-    status: 200,
-    message: `Movie with ${id} successfully find`,
-    data,
-  });
-});
+moviesRouter.get("/:id", ctrlWrapper(getMovieByIdController));
 
 export default moviesRouter;
