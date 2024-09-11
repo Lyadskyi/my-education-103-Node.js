@@ -73,3 +73,18 @@ export const upsertMovieController = async (req, res) => {
     data,
   });
 };
+
+export const patchMovieController = async (req, res) => {
+  const { id } = req.params;
+  const result = await movieServices.updateMovie({ _id: id }, req.body);
+
+  if (!result) {
+    throw createHttpError(404, `Movie with id=${id} not found`);
+  }
+
+  res.json({
+    status: 200,
+    message: "Movie patched successfully",
+    data: result.data,
+  });
+};
