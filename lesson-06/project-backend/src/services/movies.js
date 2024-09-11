@@ -19,3 +19,5 @@ export const updateMovie = async (filter, data, options = {}) => {
     isNew: Boolean(rawResult?.lastErrorObject?.upserted),
   };
 };
+
+export const deleteMovie = (filter) => MovieCollection.findOneAndDelete(filter);

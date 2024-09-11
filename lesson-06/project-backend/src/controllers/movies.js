@@ -88,3 +88,14 @@ export const patchMovieController = async (req, res) => {
     data: result.data,
   });
 };
+
+export const deleteMovieController = async (req, res) => {
+  const { id } = req.params;
+  const data = await movieServices.deleteMovie({ _id: id });
+
+  if (!data) {
+    throw createHttpError(404, `Movie with id=${id} not found`);
+  }
+
+  res.status(204).send();
+};
