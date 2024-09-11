@@ -54,3 +54,22 @@ export const addMovieController = async (req, res) => {
     data,
   });
 };
+
+export const upsertMovieController = async (req, res) => {
+  const { id } = req.params;
+  const { isNew, data } = await movieServices.updateMovie(
+    { _id: id },
+    req.body,
+    {
+      upsert: true,
+    },
+  );
+
+  const status = isNew ? 201 : 200;
+
+  res.status(status).json({
+    status,
+    message: "Movie upsert successfully",
+    data,
+  });
+};
