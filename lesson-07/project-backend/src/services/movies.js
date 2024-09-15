@@ -8,7 +8,6 @@ export const createMovie = (payload) => MovieCollection.create(payload);
 
 export const updateMovie = async (filter, data, options = {}) => {
   const rawResult = await MovieCollection.findOneAndUpdate(filter, data, {
-    new: true,
     includeResultMetadata: true,
     ...options,
   });

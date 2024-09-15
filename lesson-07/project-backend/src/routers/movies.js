@@ -24,7 +24,7 @@ moviesRouter.get("/:id", isValidId, ctrlWrapper(getMovieByIdController));
 
 moviesRouter.post(
   "/",
-  // validateBody(movieAddSchema),
+  validateBody(movieAddSchema),
   ctrlWrapper(addMovieController),
 );
 

@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
 
-import { genreList } from "../../constants/movies.js";
+import { genreList, releaseYearRegexp } from "../../constants/movies.js";
 
-import { handleSaveError } from "./hooks.js";
+import { handleSaveError, setUpdateOptions } from "./hooks.js";
 
 const movieSchema = new Schema(
   {
@@ -24,11 +24,20 @@ const movieSchema = new Schema(
       default: false,
       required: true,
     },
+    releaseYear: {
+      type: String,
+      match: releaseYearRegexp,
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true },
 );
 
 movieSchema.post("save", handleSaveError);
+
+movieSchema.pre("findOneAndUpdate", setUpdateOptions);
+
+movieSchema.post("findOneAndUpdate", handleSaveError);
 
 const MovieCollection = model("movie", movieSchema);
 
