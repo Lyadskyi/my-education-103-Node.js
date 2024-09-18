@@ -10,8 +10,11 @@ const movieServices = {
 }
 */
 
+import parsePaginationParams from "../utils/parsePaginationParams.js";
+
 export const getAllMoviesController = async (req, res) => {
-  const data = await movieServices.getAllMovies();
+  const { perPage, page } = parsePaginationParams(req.query);
+  const data = await movieServices.getMovies({ perPage, page });
 
   res.json({
     status: 200,
@@ -30,12 +33,13 @@ export const getMovieByIdController = async (req, res) => {
 
   if (!data) {
     throw createHttpError(404, `Movie with id=${id} not found`);
-    // const error = new Error(`Movie with id=${id} not found`);
-    // error.status = 404;
-    // throw error;
-    // return res.status(404).json({
-    //   message: `Movie with id=${id} not found`,
-    // });
+    /* const error = new Error(`Movie with id=${id} not found`);
+  error.status = 404;
+  throw error;
+    return res.status(404).json({
+      message: `Movie with id=${id} not found`,
+  });
+*/
   }
 
   res.json({

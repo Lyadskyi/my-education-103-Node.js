@@ -1,6 +1,9 @@
 import Joi from "joi";
 
-import { genreList, releaseYearRegexp } from "../constants/movies.js";
+import { genreList } from "../constants/movies.js";
+// import { releaseYearRegexp } from "../constants/movies.js";
+
+const maxReleaseYear = new Date().getFullYear();
 
 export const movieAddSchema = Joi.object({
   title: Joi.string().required(),
@@ -11,7 +14,8 @@ export const movieAddSchema = Joi.object({
     .valid(...genreList)
     .required(),
   favorite: Joi.boolean(),
-  releaseYear: Joi.string().pattern(releaseYearRegexp).required(),
+  // releaseYear: Joi.string().pattern(releaseYearRegexp).required(),
+  releaseYear: Joi.number().min(1895).max(maxReleaseYear).required(),
 });
 
 export const moviePatchSchema = Joi.object({
@@ -19,5 +23,5 @@ export const moviePatchSchema = Joi.object({
   director: Joi.string(),
   genre: Joi.string().valid(...genreList),
   favorite: Joi.boolean(),
-  releaseYear: Joi.string(),
+  eleaseYear: Joi.number().min(1895).max(maxReleaseYear),
 });

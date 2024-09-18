@@ -1,6 +1,15 @@
 import MovieCollection from "../db/models/Movie.js";
 
-export const getAllMovies = () => MovieCollection.find();
+export const getMovies = async ({ perPage, page }) => {
+  const skip = (page - 1) * perPage;
+  const movies = await MovieCollection.find().skip(skip).limit(perPage);
+  const count = await MovieCollection.find().countDocuments();
+
+  return {
+    movies,
+    totalItems: count,
+  };
+};
 
 export const getMovieById = (id) => MovieCollection.findById(id);
 
