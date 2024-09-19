@@ -48,4 +48,14 @@ const MovieCollection = model("movie", movieSchema);
 // category => categories
 // mouse => mice
 
+export const sortFields = [
+  "title",
+  "director",
+  "genre",
+  "favorite",
+  "releaseYear",
+  "createdAt",
+  "updatedAt",
+];
+
 export default MovieCollection;
