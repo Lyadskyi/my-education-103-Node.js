@@ -13,6 +13,7 @@ import notFoundHandler from "./middlewares/notFoundHandler.js";
 import errorHandler from "./middlewares/errorHandler.js";
 // import logger from "./middlewares/logger.js";
 
+import authRouter from "./routers/auth.js";
 import moviesRouter from "./routers/movies.js";
 
 export const startServer = () => {
@@ -22,6 +23,7 @@ export const startServer = () => {
   app.use(cors());
   app.use(express.json()); // 2.Функція прописує middlewares
 
+  app.use("/auth", authRouter);
   app.use("/movies", moviesRouter);
 
   app.use(notFoundHandler);
