@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Avatar",
+    "director": "James Cameron",
+    "genre": "fantastic",
+    "favorite": false,
+    "releaseYear": 2009
+  },
+  {
+    "title": "Avatar 2",
+    "director": "James Cameron",
+    "genre": "fantastic",
+    "favorite": false,
+    "releaseYear": 2022
+  },
+  {
+    "title": "Jhon Wick",
+    "director": "Stahelski",
+    "genre": "fantastic",
+    "favorite": false,
+    "releaseYear": 2017
+  },
+  {
+    "title": "Jhon Wick 2",
+    "director": "Stahelski",
+    "genre": "fantastic",
+    "favorite": false,
+    "releaseYear": 2019
+  }
+]
