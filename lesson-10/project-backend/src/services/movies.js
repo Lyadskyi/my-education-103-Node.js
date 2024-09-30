@@ -20,6 +20,9 @@ export const getMovies = async ({
   if (filter.maxReleaseYear) {
     movieQuery.where("releaseYear").lte(filter.maxReleaseYear);
   }
+  if (filter.userId) {
+    movieQuery.where("userId").eq(filter.userId);
+  }
 
   const movies = await movieQuery
     .skip(skip)
