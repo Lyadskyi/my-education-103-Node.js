@@ -9,6 +9,7 @@ import {
   deleteMovieController,
 } from "../controllers/movies.js";
 
+import authenticate from "../middlewares/authenticate.js";
 import isValidId from "../middlewares/isValidId.js";
 
 import ctrlWrapper from "../utils/ctrlWpapper.js";
@@ -17,6 +18,8 @@ import validateBody from "../utils/validatebody.js";
 import { movieAddSchema, moviePatchSchema } from "../validation/movies.js";
 
 const moviesRouter = Router();
+
+moviesRouter.use(authenticate);
 
 moviesRouter.get("/", ctrlWrapper(getAllMoviesController));
 
