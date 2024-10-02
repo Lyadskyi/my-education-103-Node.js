@@ -42,7 +42,7 @@ export const getMovies = async ({
   };
 };
 
-export const getMovieById = (id) => MovieCollection.findById(id);
+export const getMovie = (filter) => MovieCollection.findById(filter);
 
 export const createMovie = (payload) => MovieCollection.create(payload);
 
