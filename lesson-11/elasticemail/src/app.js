@@ -11,7 +11,7 @@ apikey.apiKey = ELASTICEMAIL_API_KEY;
 const api = new ElasticEmail.EmailsApi();
 
 const email = ElasticEmail.EmailMessageData.constructFromObject({
-  Recipients: [new ElasticEmail.EmailRecipient("xikibi9732@abevw.com")],
+  Recipients: [new ElasticEmail.EmailRecipient(ELASTICEMAIL_FROM)],
   Content: {
     Body: [
       ElasticEmail.BodyPart.constructFromObject({
