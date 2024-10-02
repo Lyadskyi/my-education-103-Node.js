@@ -5,6 +5,8 @@ import { randomBytes } from "crypto";
 import UserCollection from "../db/models/User.js";
 import SessionCollection from "../db/models/Session.js";
 
+import sendEmail from "../utils/sendEmail.js";
+
 import {
   accessTokenLifeTime,
   refreshTokenLifeTime,
@@ -38,7 +40,15 @@ export const signup = async (payload) => {
     ...payload,
     password: hashPassword,
   });
+
   delete data._doc.password;
+
+  const verifyEmail = {
+    to: email,
+    subject: "Verify email",
+    html: `<a target="_blank" href="http://localhost:3000/auth/verify?token=">Click verify email</a>`,
+  };
+  await sendEmail(verifyEmail);
 
   return data._doc;
 };
@@ -49,6 +59,10 @@ export const signin = async (payload) => {
   const user = await UserCollection.findOne({ email });
   if (!user) {
     throw createHttpError(401, "Email or password invalid");
+  }
+
+  if (!user.verify) {
+    throw createHttpError(401, "Email not verify");
   }
 
   const passwordCompare = await bcrypt.compare(password, user.password);
