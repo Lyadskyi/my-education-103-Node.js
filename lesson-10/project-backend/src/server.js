@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 /* import dotenv from 'dotenv';
 dotenv.config();
@@ -22,6 +23,7 @@ export const startServer = () => {
   // app.use(logger);
   app.use(cors());
   app.use(express.json()); // 2.Функція прописує middlewares
+  app.use(cookieParser());
 
   app.use("/auth", authRouter);
   app.use("/movies", moviesRouter);

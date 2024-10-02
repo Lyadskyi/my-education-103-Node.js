@@ -1,5 +1,17 @@
 import * as authServices from "../services/auth.js";
 
+const setupSession = (res, session) => {
+  res.cookie("refreshToken", session.refreshToken, {
+    httpOnly: true,
+    expire: new Date(Date.now() + session.refreshTokenValidUntil),
+  });
+
+  res.cookie("sessionId", session._id, {
+    httpOnly: true,
+    expire: new Date(Date.now() + session.refreshTokenValidUntil),
+  });
+};
+
 export const signupController = async (req, res) => {
   const newUser = await authServices.signup(req.body);
 
@@ -13,19 +25,29 @@ export const signupController = async (req, res) => {
 export const signinController = async (req, res) => {
   const session = await authServices.signin(req.body);
 
-  res.cookie("refreshToken", session.refreshToken, {
-    httpOnly: true,
-    expire: new Date(Date.now() + session.refreshTokenValidUntil),
-  });
-
-  res.cookie("sessionId", session._id, {
-    httpOnly: true,
-    expire: new Date(Date.now() + session.refreshTokenValidUntil),
-  });
+  setupSession(res, session);
 
   res.json({
     status: 200,
     message: "Successfully signin",
+    data: {
+      accessToken: session.accessToken,
+    },
+  });
+};
+
+export const refreshController = async (req, res) => {
+  const { refreshToken, sessionId } = req.cookies;
+  const session = await authServices.refreshSession({
+    refreshToken,
+    sessionId,
+  });
+
+  setupSession(res, session);
+
+  res.json({
+    status: 200,
+    message: "Successfully refresh session",
     data: {
       accessToken: session.accessToken,
     },
