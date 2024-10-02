@@ -7,6 +7,7 @@ import SessionCollection from "../db/models/Session.js";
 
 import sendEmail from "../utils/sendEmail.js";
 import { env } from "../utils/env.js";
+import { createJwtToken } from "../utils/jwt.js";
 
 import {
   accessTokenLifeTime,
@@ -46,10 +47,12 @@ export const signup = async (payload) => {
 
   delete data._doc.password;
 
+  const jwtToken = createJwtToken({ email });
+
   const verifyEmail = {
     to: email,
     subject: "Verify email",
-    html: `<a target="_blank" href="${appDomain}/auth/verify?token=">Click verify email</a>`,
+    html: `<a target="_blank" href="${appDomain}/auth/verify?token=${jwtToken}">Click verify email</a>`,
   };
   await sendEmail(verifyEmail);
 
