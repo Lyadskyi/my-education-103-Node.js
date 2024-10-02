@@ -1,0 +1,24 @@
+{
+  "name": "elasticemail",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [],
+  "author": "Dmytro Liadskyi <liadskyidmytro1983@gmail.com>",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "eslint": "^9.11.1",
+    "globals": "^15.10.0",
+    "nodemon": "^3.1.7"
+  },
+  "dependencies": {
+    "@elasticemail/elasticemail-client": "^4.0.23",
+    "dotenv": "^16.4.5"
+  }
+}
