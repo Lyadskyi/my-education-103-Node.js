@@ -6,6 +6,7 @@ import UserCollection from "../db/models/User.js";
 import SessionCollection from "../db/models/Session.js";
 
 import sendEmail from "../utils/sendEmail.js";
+import { env } from "../utils/env.js";
 
 import {
   accessTokenLifeTime,
@@ -25,6 +26,8 @@ export const createSession = () => {
     refreshTokenValidUntil,
   };
 };
+
+const appDomain = env("APP_DOMAIN");
 
 export const signup = async (payload) => {
   const { email, password } = payload;
@@ -46,7 +49,7 @@ export const signup = async (payload) => {
   const verifyEmail = {
     to: email,
     subject: "Verify email",
-    html: `<a target="_blank" href="http://localhost:3000/auth/verify?token=">Click verify email</a>`,
+    html: `<a target="_blank" href="${appDomain}/auth/verify?token=">Click verify email</a>`,
   };
   await sendEmail(verifyEmail);
 
