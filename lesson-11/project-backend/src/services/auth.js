@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
 import { randomBytes } from "crypto";
+import * as path from "node:path";
+import * as fs from "node:fs/promises";
+import handlebars from "handlebars";
 
 import UserCollection from "../db/models/User.js";
 import SessionCollection from "../db/models/Session.js";
@@ -13,6 +16,15 @@ import {
   accessTokenLifeTime,
   refreshTokenLifeTime,
 } from "../constants/users.js";
+
+import { TEMPLATES_DIR } from "../constants/index.js";
+
+const verifyEmailTemplatePath = path.join(TEMPLATES_DIR, "verify-email.html");
+
+const verifyEmailTemplateSource = await fs.readFile(
+  verifyEmailTemplatePath,
+  "utf-8",
+);
 
 export const createSession = () => {
   const accessToken = randomBytes(30).toString("base64");
@@ -35,7 +47,7 @@ export const signup = async (payload) => {
   const user = await UserCollection.findOne({ email });
 
   if (user) {
-    throw createHttpError(409, "Email in use");
+    throw createHttpError(409, "Email already exist");
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
@@ -48,11 +60,16 @@ export const signup = async (payload) => {
   delete data._doc.password;
 
   const jwtToken = createJwtToken({ email });
+  const template = handlebars.compile(verifyEmailTemplateSource);
+  const html = template({
+    appDomain,
+    jwtToken,
+  });
 
   const verifyEmail = {
     to: email,
     subject: "Verify email",
-    html: `<a target="_blank" href="${appDomain}/auth/verify?token=${jwtToken}">Click verify email</a>`,
+    html,
   };
   await sendEmail(verifyEmail);
 
