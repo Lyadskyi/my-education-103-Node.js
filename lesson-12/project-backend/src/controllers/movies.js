@@ -66,14 +66,16 @@ export const getMovieByIdController = async (req, res) => {
 };
 
 export const addMovieController = async (req, res) => {
-  const { _id: userId } = req.user;
-  const data = await movieServices.createMovie({ ...req.body, userId });
+  console.log(req.body);
+  console.log(req.file);
 
-  res.status(201).json({
-    status: 201,
-    message: "Movie add successfully",
-    data,
-  });
+  // const { _id: userId } = req.user;
+  // const data = await movieServices.createMovie({ ...req.body, userId });
+  // res.status(201).json({
+  //   status: 201,
+  //   message: "Movie add successfully",
+  //   data,
+  // });
 };
 
 export const upsertMovieController = async (req, res) => {

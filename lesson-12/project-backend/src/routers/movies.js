@@ -11,6 +11,7 @@ import {
 
 import authenticate from "../middlewares/authenticate.js";
 import isValidId from "../middlewares/isValidId.js";
+import upload from "../middlewares/upload.js";
 
 import ctrlWrapper from "../utils/ctrlWpapper.js";
 import validateBody from "../utils/validatebody.js";
@@ -25,8 +26,12 @@ moviesRouter.get("/", ctrlWrapper(getAllMoviesController));
 
 moviesRouter.get("/:id", isValidId, ctrlWrapper(getMovieByIdController));
 
+// upload.fields([{name: "poster", maxCount: 1}, {name: "subposter", maxCount: 2}])
+// upload.array("poster", 8)
+
 moviesRouter.post(
   "/",
+  upload.single("poster"),
   validateBody(movieAddSchema),
   ctrlWrapper(addMovieController),
 );
