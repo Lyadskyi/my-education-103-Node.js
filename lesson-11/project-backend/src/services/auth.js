@@ -1,16 +1,16 @@
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
-import { randomBytes } from "crypto";
+import handlebars from "handlebars";
 import * as path from "node:path";
 import * as fs from "node:fs/promises";
-import handlebars from "handlebars";
+import { randomBytes } from "crypto";
 
-import UserCollection from "../db/models/User.js";
 import SessionCollection from "../db/models/Session.js";
+import UserCollection from "../db/models/User.js";
 
 import sendEmail from "../utils/sendEmail.js";
 import { env } from "../utils/env.js";
-import { createJwtToken } from "../utils/jwt.js";
+import { createJwtToken, verifyToken } from "../utils/jwt.js";
 
 import {
   accessTokenLifeTime,
@@ -44,8 +44,8 @@ const appDomain = env("APP_DOMAIN");
 
 export const signup = async (payload) => {
   const { email, password } = payload;
-  const user = await UserCollection.findOne({ email });
 
+  const user = await UserCollection.findOne({ email });
   if (user) {
     throw createHttpError(409, "Email already exist");
   }
@@ -71,9 +71,24 @@ export const signup = async (payload) => {
     subject: "Verify email",
     html,
   };
+
   await sendEmail(verifyEmail);
 
   return data._doc;
+};
+
+export const verify = async (token) => {
+  const { data, error } = verifyToken(token);
+  if (error) {
+    throw createHttpError(401, "Token invalid");
+  }
+
+  const user = await UserCollection.findOne({ email: data.email });
+  if (user.verify) {
+    throw createHttpError(401, "Email already verify");
+  }
+
+  await UserCollection.findOneAndUpdate({ _id: user._id }, { verify: true });
 };
 
 export const signin = async (payload) => {
@@ -83,7 +98,6 @@ export const signin = async (payload) => {
   if (!user) {
     throw createHttpError(401, "Email or password invalid");
   }
-
   if (!user.verify) {
     throw createHttpError(401, "Email not verify");
   }
@@ -113,11 +127,9 @@ export const refreshSession = async ({ refreshToken, sessionId }) => {
     _id: sessionId,
     refreshToken,
   });
-
   if (!oldSession) {
     throw createHttpError(401, "Session not found");
   }
-
   if (new Date() > oldSession.refreshTokenValidUntil) {
     throw createHttpError(401, "Session token expired");
   }

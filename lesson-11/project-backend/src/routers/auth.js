@@ -1,11 +1,10 @@
 import { Router } from "express";
+import { userSignupSchema, userSigninSchema } from "../validation/users.js";
 
 import * as authControllers from "../controllers/auth.js";
 
 import validateBody from "../utils/validatebody.js";
 import ctrlWrapper from "../utils/ctrlWpapper.js";
-
-import { userSignupSchema, userSigninSchema } from "../validation/users.js";
 
 const authRouter = Router();
 
@@ -14,6 +13,8 @@ authRouter.post(
   validateBody(userSignupSchema),
   ctrlWrapper(authControllers.signupController),
 );
+
+authRouter.get("/verify", ctrlWrapper(authControllers.verifyController));
 
 authRouter.post(
   "/signin",
