@@ -33,6 +33,9 @@ const movieSchema = new Schema(
       max: new Date().getFullYear(),
       required: true,
     },
+    poster: {
+      type: String,
+    },
     userId: {
       type: Schema.Types.ObjectId,
       ref: "user",

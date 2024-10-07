@@ -13,6 +13,7 @@ const movieServices = {
 import parsePaginationParams from "../utils/parsePaginationParams.js";
 import parseSortParams from "../utils/parseSortParams.js";
 import parseMovieFilterParams from "../utils/filters/parseMovieFilterParams.js";
+import saveFileToUploadDir from "../utils/saveFileToUploadDir.js";
 
 import { sortFields } from "../db/models/Movie.js";
 
@@ -66,16 +67,18 @@ export const getMovieByIdController = async (req, res) => {
 };
 
 export const addMovieController = async (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
+  let poster;
+  if (req.file) {
+    poster = await saveFileToUploadDir(req.file);
+  }
 
-  // const { _id: userId } = req.user;
-  // const data = await movieServices.createMovie({ ...req.body, userId });
-  // res.status(201).json({
-  //   status: 201,
-  //   message: "Movie add successfully",
-  //   data,
-  // });
+  const { _id: userId } = req.user;
+  const data = await movieServices.createMovie({ ...req.body, userId, poster });
+  res.status(201).json({
+    status: 201,
+    message: "Movie add successfully",
+    data,
+  });
 };
 
 export const upsertMovieController = async (req, res) => {
