@@ -8,7 +8,7 @@ const saveFileToUploadDir = async (file) => {
   const newPath = path.join(UPLOAD_DIR, file.filename);
   await fs.rename(oldPath, newPath);
 
-  return `/uploads/${file.filename}`;
+  return file.filename;
 };
 
 export default saveFileToUploadDir;
