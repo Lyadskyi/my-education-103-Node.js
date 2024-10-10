@@ -14,6 +14,11 @@ authRouter.post(
   ctrlWrapper(authControllers.signupController),
 );
 
+authRouter.get(
+  "/google-oauth-url",
+  ctrlWrapper(authControllers.getGoogleOauthUrlController),
+);
+
 authRouter.get("/verify", ctrlWrapper(authControllers.verifyController));
 
 authRouter.post(

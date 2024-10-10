@@ -24,6 +24,7 @@ export const signupController = async (req, res) => {
 
 export const verifyController = async (req, res) => {
   const { token } = req.query;
+
   await authServices.verify(token);
 
   res.json({
@@ -49,6 +50,7 @@ export const signinController = async (req, res) => {
 
 export const refreshController = async (req, res) => {
   const { refreshToken, sessionId } = req.cookies;
+
   const session = await authServices.refreshSession({
     refreshToken,
     sessionId,
@@ -75,4 +77,16 @@ export const signoutController = async (req, res) => {
   res.clearCookie("refreshToken");
 
   res.status(204).send();
+};
+
+export const getGoogleOauthUrlController = async (req, res) => {
+  const url = "https://";
+
+  res.json({
+    status: 200,
+    message: "Successfully create Google Oauth url",
+    data: {
+      url,
+    },
+  });
 };
